@@ -46,4 +46,12 @@ public class SocketServer {
 			}
 		}
 	}
+
+
+
+
+	public void removeConnection(ServerRunnable serverRunnable) {
+		// TODO Auto-generated method stub
+		this.clientList.remove(serverRunnable);
+	}
 }

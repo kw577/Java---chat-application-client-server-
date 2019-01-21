@@ -75,6 +75,7 @@ public class ServerRunnable implements Runnable {
 				
 				// jesli client wpisze komende quit - nastapi zamkniecie polaczenia z serwerem
 				if("quit".equalsIgnoreCase(cmd)) {
+					logging_out();
 					break;
 				} else if ("login".equalsIgnoreCase(cmd)) {
 					check_login(outputStream, tokens);
@@ -100,6 +101,22 @@ public class ServerRunnable implements Runnable {
 								
 		// Zamykanie polaczenia
 		clientSocket.close();
+		
+	}
+
+	private void logging_out() throws IOException {
+		this.serverSocket.removeConnection(this);
+		
+		// po wylogowaniu  wysylamy do wszystkich pozostalych klientow informacje 
+		String byeMsg = "user " + this.loggedUser + " is offline\n";
+		List<ServerRunnable> clientList = this.serverSocket.getClientList();
+		for(ServerRunnable srvRun : clientList) {
+			if(!this.loggedUser.equals(srvRun.getLoggedUser()))
+				if(srvRun.getLoggedUser() != null)
+					srvRun.send(byeMsg);
+		}
+		
+		this.clientSocket.close();
 		
 	}
 
