@@ -10,3 +10,7 @@ public class ChatServer {
 	}
 
 }
+
+
+
+//testowac polacznie z serwerem mozna przez windows command line:    telnet localhost 4444    (4444 to przyjety w klasie SocketServer numer portu)
