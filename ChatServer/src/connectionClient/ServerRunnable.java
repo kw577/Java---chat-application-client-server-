@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.HashSet;
 import java.util.List;
 
 //za kazdym razem gdy tworzone jest gniazdo klienta - jest ono przekazywane do tej klasy
@@ -19,7 +20,10 @@ public class ServerRunnable implements Runnable {
 	private OutputStream outputStream;
 	private String loggedUser;
 	
-
+	// Test - docelowo zmienic na baze danych
+	private HashSet<String> topicSet = new HashSet<>();
+	
+	
 	// konstruktor
 	public ServerRunnable(Socket clientSocket, SocketServer serverSocket) {
 		this.clientSocket = clientSocket;
@@ -82,7 +86,11 @@ public class ServerRunnable implements Runnable {
 				} else if ("msg".equalsIgnoreCase(cmd)) {
 					String[] tokensMsg = line.split(" ", 3); // oddziaala tylko 3 pierwsza slowa - reszta - wiadomosc do innego uzytkownika bedzie przechowywana w  tokensMsg[2]
 					sendMessage(tokensMsg);
-				}				
+				} else if ("join".equalsIgnoreCase(cmd)) { // dolaczenie do zapisanej rozmowy
+					joinConverstion(tokens);
+				} else if ("leave".equalsIgnoreCase(cmd)) { // dolaczenie do zapisanej rozmowy
+					leaveConversation(tokens);
+				}		
 				else {
 					msg = "unknown command: " + cmd + "\n";
 					outputStream.write(msg.getBytes());
@@ -108,6 +116,10 @@ public class ServerRunnable implements Runnable {
 	}
 
 	
+
+
+
+
 	private void logging_out() throws IOException {
 		this.serverSocket.removeConnection(this);
 		
@@ -188,22 +200,62 @@ public class ServerRunnable implements Runnable {
 		this.loggedUser = loggedUser;
 	}
 
+	// komenda typu:  msg <user> <text>
+	// komenda typu:  msg #topic <text>
 	private void sendMessage(String[] tokens) throws IOException {
-		// komenda typu:  msg <user> <text>
+		
 		String sendTo = tokens[1];
 		String body = tokens[2];
 		
+		// sprawdzenie czy zostala podana zmienna okreslajaca wybor konwersacji
+		boolean isTopic = false;
+		if(sendTo.charAt(0) == '#') isTopic = true;  // sprawdza czy drugi przeslany parametr to #  - wtedy wiadomosc ma byc wyslana do wszystkich ktorzy sa uczestnikami tej konwersacji
+		
+		
 		List<ServerRunnable> clients = this.serverSocket.getClientList();
 		for(ServerRunnable srvRun : clients) {
-			if(sendTo.equalsIgnoreCase(srvRun.getLoggedUser())) {
-				String outMsg = "msg " + this.loggedUser + " " + body + "\n";
-				srvRun.send(outMsg);
+			if(isTopic) {
+				if(srvRun.isMemberOfDiscussion(sendTo)) {
+					String outMsg = "msg " + sendTo + ":" + this.loggedUser + " " + body + "\n";
+					srvRun.send(outMsg);
+				}
+			}
+			else {
+			
+			
+				if(sendTo.equalsIgnoreCase(srvRun.getLoggedUser())) {
+					String outMsg = "msg " + this.loggedUser + " " + body + "\n";
+					srvRun.send(outMsg);
+				}
 			}
 		}
 		
 		
 	}
 	
+	
+	public boolean isMemberOfDiscussion(String topic) {
+		
+		 return this.topicSet.contains(topic);
+	}
+		
+	// komenda typu   join <topic>
+	private void joinConverstion(String[] tokens) {
+		if(tokens.length > 1) {
+			String topic = tokens[1];
+			topicSet.add(topic);
+		}
+		
+	}
+	
+	
+	private void leaveConversation(String[] tokens) {
+		if(tokens.length > 1) {
+			String topic = tokens[1];
+			topicSet.remove(topic);
+		}
+		
+	}
 	
 }
 
