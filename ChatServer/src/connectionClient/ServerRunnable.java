@@ -79,6 +79,9 @@ public class ServerRunnable implements Runnable {
 					break;
 				} else if ("login".equalsIgnoreCase(cmd)) {
 					check_login(outputStream, tokens);
+				} else if ("msg".equalsIgnoreCase(cmd)) {
+					String[] tokensMsg = line.split(" ", 3); // oddziaala tylko 3 pierwsza slowa - reszta - wiadomosc do innego uzytkownika bedzie przechowywana w  tokensMsg[2]
+					sendMessage(tokensMsg);
 				}				
 				else {
 					msg = "unknown command: " + cmd + "\n";
@@ -104,6 +107,7 @@ public class ServerRunnable implements Runnable {
 		
 	}
 
+	
 	private void logging_out() throws IOException {
 		this.serverSocket.removeConnection(this);
 		
@@ -121,6 +125,7 @@ public class ServerRunnable implements Runnable {
 	}
 
 	private void check_login(OutputStream outputStream, String[] tokens) throws IOException {
+		// komenda typu:  login <user> <password>
 		if(tokens.length == 3) {
 			String login = tokens[1];
 			String password = tokens[2];
@@ -183,5 +188,22 @@ public class ServerRunnable implements Runnable {
 		this.loggedUser = loggedUser;
 	}
 
+	private void sendMessage(String[] tokens) throws IOException {
+		// komenda typu:  msg <user> <text>
+		String sendTo = tokens[1];
+		String body = tokens[2];
+		
+		List<ServerRunnable> clients = this.serverSocket.getClientList();
+		for(ServerRunnable srvRun : clients) {
+			if(sendTo.equalsIgnoreCase(srvRun.getLoggedUser())) {
+				String outMsg = "msg " + this.loggedUser + " " + body + "\n";
+				srvRun.send(outMsg);
+			}
+		}
+		
+		
+	}
+	
+	
 }
 
