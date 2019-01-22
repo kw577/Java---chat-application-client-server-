@@ -17,6 +17,9 @@ public class ChatClient {
 	private BufferedReader bufferedIn;
 	
 	private ArrayList<UserStatusListener> userStatusListeners = new ArrayList<>();
+	private ArrayList<MessageListener> messageListeners = new ArrayList<>();
+	
+	
 	
 	public ChatClient(String serverName, int portNumber) {
 		this.serverName = serverName;
@@ -39,11 +42,22 @@ public class ChatClient {
 			@Override
 			public void offline(String login) {
 				// TODO Auto-generated method stub
-				System.out.println("ONLINE: " + login);
+				System.out.println("OFFLINE: " + login);
 			}
 			
 						
 		});
+		
+	client.addMessageListener(new MessageListener() {
+
+		@Override
+		public void onMessage(String fromLogin, String msgBody) {
+			// TODO Auto-generated method stub
+			System.out.println("You got a message from: " + fromLogin + " ->  " + msgBody);
+		}
+		
+	});	
+		
 		
 		
 		if(!client.connectToServer()) {
@@ -61,7 +75,7 @@ public class ChatClient {
 			}
 			
 			//test - automatycznie zamknie client'a po zalogowaniu
-			client.closeConnection();
+			//client.closeConnection();
 		}
 	
 		//client.closeConnection();
@@ -137,6 +151,10 @@ public class ChatClient {
 						handleOnline(tokens);
 					} else if ("offline".equalsIgnoreCase(cmd)) {
 						handleOffline(tokens);
+					} else if ("msg".equalsIgnoreCase(cmd)) {
+						String[] tokensMsg = line.split(" ", 3); // oddziaala tylko 3 pierwsza slowa - reszta - wiadomosc do innego uzytkownika bedzie przechowywana w  tokensMsg[2]
+						
+						handleMessage(tokensMsg);
 					}
 				}
 				
@@ -156,6 +174,18 @@ public class ChatClient {
 	}
 
 
+
+
+
+	private void handleMessage(String[] tokensMsg) {
+		// TODO Auto-generated method stub
+		String login = tokensMsg[1];
+		String msgBody = tokensMsg[2];
+		
+		for(MessageListener listener : messageListeners) {
+			listener.onMessage(login, msgBody);
+		}
+	}
 
 
 
@@ -192,6 +222,20 @@ public class ChatClient {
 		userStatusListeners.remove(listener);
 		
 	}
+	
+	
+	public void addMessageListener(MessageListener listener){
+		
+		messageListeners.add(listener);
+		
+	}
+	
+	public void removeMessageListener(MessageListener listener){
+		
+		messageListeners.remove(listener);
+		
+	}
+	
 	
 	// informacje o zalogowanych uzytkownikach
 	private void handleOnline(String[] tokens) {
