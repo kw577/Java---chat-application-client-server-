@@ -13,7 +13,7 @@ public class UserPanel extends JPanel implements UserStatusListener {
 	
 	private final ChatClient client;
 	private JList<String> userListUI;
-	private DefaultListModel<String> userListModel;
+	public DefaultListModel<String> userListModel;
 	
 	
 	
