@@ -100,7 +100,7 @@ public class ChatClient {
 
 
 
-	private boolean login(String login, String password) throws IOException {
+	public boolean login(String login, String password) throws IOException {
 		// TODO Auto-generated method stub
 		//System.out.println("\n\n\n\nStarted login");
 		String cmd = "login " + login + " " + password + "\n";
@@ -189,7 +189,7 @@ public class ChatClient {
 
 
 
-	private boolean connectToServer() {
+	public boolean connectToServer() {
 		try {
 			this.serverSocket = new Socket(this.serverName, this.portNumber);
 			this.serverOut = serverSocket.getOutputStream();
