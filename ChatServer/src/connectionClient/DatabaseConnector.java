@@ -16,7 +16,7 @@ public class DatabaseConnector {
 
 
 	private Connection session;
-    
+    private Statement statement;
 	
 	
 	public DatabaseConnector(String adress, String userName, String password) {
@@ -29,7 +29,7 @@ public class DatabaseConnector {
 			System.out.println("Driver loaded succesfully");
 			
 			this.session = this.connectToDatabase(adress, userName, password);
-			
+			this.statement = createStatement(session);
 			
 		} else {
 			System.err.println("Error while loading driver");
@@ -72,7 +72,7 @@ public class DatabaseConnector {
 	
 	
 	
-	private static void closeConnection(Connection connection, Statement s) {
+	public static void closeConnection(Connection connection, Statement s) {
 	    System.out.print("\nZamykanie polaczenia z baza:");
 	    try {
 	        s.close();
@@ -86,7 +86,7 @@ public class DatabaseConnector {
 	}
 	
 	
-	private static ResultSet executeQuery(Statement s, String sql) {
+	public static ResultSet executeQuery(Statement s, String sql) {
 	    try {
 	        return s.executeQuery(sql);
 	    } catch (SQLException e) {
@@ -94,6 +94,75 @@ public class DatabaseConnector {
 	    }
 	    return null;
 	}
+	
+	
+	
+	
+	
+	
+	public static String printSingleCellQueryString(ResultSet r) {
+	    String result="";
+		ResultSetMetaData rsmd;
+	    try {
+	        rsmd = r.getMetaData();
+	        result = r.getString(0);
+
+	    } catch (SQLException e) {
+	        System.out.println("Blad odczytu z bazy! " + e.toString());
+	        System.exit(3);
+	    }
+	    
+	    return result;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+		
+	
+	public static String printDataFromQueryString(ResultSet r) {
+	    String result="";
+		ResultSetMetaData rsmd;
+	    try {
+	        rsmd = r.getMetaData();
+	        int numcols = rsmd.getColumnCount(); // pobieranie liczby column
+
+	        // wyswietlanie kolejnych rekordow:
+	        while (r.next()) {
+	            for (int i = 1; i <= numcols; i++) {
+	                Object obj = r.getObject(i);
+	                if (obj != null)
+	                    result += obj.toString() + " ";
+	                else
+	                	result += " ";
+	            }
+	            // System.out.println();
+	        }
+	    } catch (SQLException e) {
+	        System.out.println("Blad odczytu z bazy! " + e.toString());
+	        System.exit(3);
+	    }
+	    
+	    
+	    return result;
+	}
+	
+	
 	
 	
 	private static void printDataFromQuery(ResultSet r) {
@@ -121,7 +190,7 @@ public class DatabaseConnector {
 	
 	
 	
-    private static Statement createStatement(Connection connection) {
+    public static Statement createStatement(Connection connection) {
         try {
             return connection.createStatement();
         } catch (SQLException e) {
@@ -142,23 +211,35 @@ public class DatabaseConnector {
 	
 	
 	
+	public Statement getStatement() {
+		return statement;
+	}
+
+	public void setStatement(Statement statement) {
+		this.statement = statement;
+	}
+
 	// Test
 	public static void main(String[] args) {
 		DatabaseConnector dbConnection = new DatabaseConnector("jdbc:mysql://localhost:3306/chat_database", "root", "");
         String sql = "Select * from user";
-        Statement s = createStatement(dbConnection.getSession());
-        ResultSet r = executeQuery(s, sql);
-        printDataFromQuery(r);
+      
+        ResultSet r = executeQuery(dbConnection.getStatement(), sql);
+       printDataFromQuery(r);
+        
+
         
         System.out.println("\n\n\n");
-        sql = "Select password from user where nick='Kuba'";
-        s = createStatement(dbConnection.getSession());
-        r = executeQuery(s, sql);
+        sql = "Select password from user where nick='Adam';";
+        
+        r = executeQuery(dbConnection.getStatement(), sql);
+        //System.out.println("\n\n\n\nWYNIKI");
+        //System.out.println(printDataFromQueryString(r));
         printDataFromQuery(r);
         
         
         
-        closeConnection(dbConnection.getSession(), s);
+        closeConnection(dbConnection.getSession(), dbConnection.getStatement());
 	
 	
 	}

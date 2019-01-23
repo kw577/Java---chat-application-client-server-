@@ -7,6 +7,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.HashSet;
 import java.util.List;
 
@@ -19,6 +21,8 @@ public class ServerRunnable implements Runnable {
 	private SocketServer serverSocket;
 	private OutputStream outputStream;
 	private String loggedUser;
+	//private DatabaseConnector dataBaseConnection;
+	
 	
 	// Test - docelowo zmienic na baze danych
 	private HashSet<String> topicSet = new HashSet<>();
@@ -28,6 +32,7 @@ public class ServerRunnable implements Runnable {
 	public ServerRunnable(Socket clientSocket, SocketServer serverSocket) {
 		this.clientSocket = clientSocket;
 		this.serverSocket = serverSocket;
+		//DatabaseConnector dbConnection = new DatabaseConnector("jdbc:mysql://localhost:3306/chat_database", "root", "");
 	}
 	
 	public void run() {
@@ -131,6 +136,7 @@ public class ServerRunnable implements Runnable {
 				if(srvRun.getLoggedUser() != null)
 					srvRun.send(byeMsg);
 		}
+		//this.dataBaseConnection.closeConnection(this.dataBaseConnection.getSession(), this.dataBaseConnection.getStatement());
 		
 		this.clientSocket.close();
 		
@@ -143,9 +149,22 @@ public class ServerRunnable implements Runnable {
 			String password = tokens[2];
 			String msg;
 			
+			// sprawdzenie w bazie danych hasla dla podanego uzytkownika
+			String correctPassword="";
+			String sql = "Select password from user where nick='" + login +"';";
+			
+			correctPassword = executeSQLquery(sql);
+			correctPassword = correctPassword.replaceAll("\\s+","");
+			
+			//System.out.println("\n\nCorrect password:   " + correctPassword);
+			System.out.println("Ilosc znakow w password: " + password.length());
+			System.out.println("Ilosc znakow w correct password: " + correctPassword.length());
+		
+			///////////////////////////////////
+			
 			
 			// Test login - za pomoca ustawionych na stale wartosci 
-			if((login.equals("user") && password.equals("pass")) || (login.equals("me") && password.equals("pass1"))) {
+			if(password.equals(correctPassword)) {
 				msg = "You have succesfully logged in\n";
 				this.userState = State.logged;
 				this.loggedUser = login;
@@ -181,6 +200,18 @@ public class ServerRunnable implements Runnable {
 			//
 			
 		}
+		
+	}
+
+	private String executeSQLquery(String sql) {
+		String wynik;
+		DatabaseConnector dbConnection = new DatabaseConnector("jdbc:mysql://localhost:3306/chat_database", "root", "");
+		
+		Statement s = DatabaseConnector.createStatement(dbConnection.getSession());
+	    ResultSet r = DatabaseConnector.executeQuery(s, sql);
+	    wynik = DatabaseConnector.printDataFromQueryString(r); 
+	    
+	    return wynik;
 		
 	}
 
