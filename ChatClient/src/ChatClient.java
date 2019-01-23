@@ -84,7 +84,7 @@ public class ChatClient {
 
 
 
-	private void msg(String sendTo, String msgBody) throws IOException {
+	public void msg(String sendTo, String msgBody) throws IOException {
 		// TODO Auto-generated method stub
 		String cmd = "msg " + sendTo + " " + msgBody + "\n";
 		this.serverOut.write(cmd.getBytes());
