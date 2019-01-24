@@ -177,7 +177,7 @@ public class ServerRunnable implements Runnable {
 				System.out.println("\nUser: " + login + " logged in\n");
 				
 				// po zalogowaniu sie wysylamy do wszystkich pozostalych klientow informacje o nowym zalogowanym uczestniku  
-				String greetingMsg = "user " + login + " is online\n";
+				String greetingMsg = "online user " + login + " from now\n";
 				List<ServerRunnable> clientList = this.serverSocket.getClientList();
 				for(ServerRunnable srvRun : clientList) {
 					if(!login.equals(srvRun.getLoggedUser()))

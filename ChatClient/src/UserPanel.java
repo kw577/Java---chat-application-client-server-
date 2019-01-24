@@ -48,6 +48,9 @@ public class UserPanel extends JPanel implements UserStatusListener {
 			public void mouseClicked(MouseEvent e) {
 				if(e.getClickCount() > 1) {
 					String login = userListUI.getSelectedValue();
+					if(login.contains("_")) {
+						login = login.replaceAll("_","");
+					}
 					MessagePane messagePane = new MessagePane(client, login);
 					
 					
@@ -149,7 +152,30 @@ public class UserPanel extends JPanel implements UserStatusListener {
 	@Override
 	public void online(String login) {
 		// TODO Auto-generated method stub
-		userListModel.addElement(login);
+		login = login.replaceAll("\\s+","");
+		
+		if(userListModel.contains(login)) {
+			System.out.println("\nW kontaktach jest osoba o takim nicku");
+			
+			for(int i=0; i<this.userListModel.size(); i++) {
+				if(this.userListModel.get(i).equals(login)) {
+					this.userListModel.set(i, this.userListModel.get(i)+"_");
+				}
+				
+				
+			}
+			
+			
+		
+			
+			
+			
+		}
+		else System.out.println("\nW kontaktach nie ma osoby o takim nicku");
+		
+		//userListModel.addElement(login);
+		
+		
 	}
 
 

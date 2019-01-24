@@ -20,7 +20,18 @@ class ContactListRenderer extends JLabel implements ListCellRenderer<String> {
                                                    boolean isSelected,
                                                    boolean cellHasFocus) {
 
-         setText(value.toString());
+        
+         
+         
+    	 setText(value.toString());
+         if(value.toString().contains("_")) {
+        	 
+        	 setText(value.toString().substring(0, value.toString().length()-1));
+         }
+         
+         
+         
+         
          
          
          // TEST
@@ -55,6 +66,13 @@ class ContactListRenderer extends JLabel implements ListCellRenderer<String> {
          
          
          if( value.equalsIgnoreCase("Kuba"))  setBackground(Color.yellow);
+         
+         
+         
+         
+         ///////// Oznaczanie aktywnych uzytkownikow
+         if(value.contains("_")) setBackground(Color.cyan);
+         
          
          
          if( value.equalsIgnoreCase("Kuba"))  setHorizontalAlignment(JLabel.CENTER);

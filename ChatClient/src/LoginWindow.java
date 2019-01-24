@@ -145,7 +145,7 @@ public class LoginWindow extends JFrame {
 				UserPanel userPanel = new UserPanel(client);
 				
 				
-				JFrame frame = new JFrame("Chat Application");
+				JFrame frame = new JFrame(login + " - Chat App.");
 				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				frame.setSize(400, 600);
 				frame.getContentPane();

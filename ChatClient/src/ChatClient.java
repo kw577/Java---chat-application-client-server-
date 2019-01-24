@@ -262,7 +262,7 @@ public class ChatClient {
 	
 	// informacje o zalogowanych uzytkownikach
 	private void handleOnline(String[] tokens) {
-		String login = tokens[1];
+		String login = tokens[2];
 		for(UserStatusListener listener : userStatusListeners) {
 			listener.online(login);
 		}
@@ -272,7 +272,7 @@ public class ChatClient {
 	
 	// informacje o zalogowanych uzytkownikach
 	private void handleOffline(String[] tokens) {
-		String login = tokens[1];
+		String login = tokens[2];
 		for(UserStatusListener listener : userStatusListeners) {
 			listener.offline(login);
 		}
