@@ -137,7 +137,7 @@ public class ServerRunnable implements Runnable {
 					srvRun.send(byeMsg);
 		}
 		//this.dataBaseConnection.closeConnection(this.dataBaseConnection.getSession(), this.dataBaseConnection.getStatement());
-		
+		System.out.println("Uzytkownik" + this.loggedUser + "Wylogowany");
 		this.clientSocket.close();
 		
 	}

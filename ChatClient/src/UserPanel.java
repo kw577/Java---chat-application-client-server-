@@ -1,12 +1,17 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -16,7 +21,7 @@ public class UserPanel extends JPanel implements UserStatusListener {
 	private JList<String> userListUI;
 	public DefaultListModel<String> userListModel;
 	
-	
+	JButton logoutButton = new JButton("Logout");
 	
 	public UserPanel(ChatClient client) {
 		
@@ -26,6 +31,7 @@ public class UserPanel extends JPanel implements UserStatusListener {
 		userListModel = new DefaultListModel<>();
 		userListUI = new JList<>(userListModel);
 		setLayout(new BorderLayout());
+		add(logoutButton,BorderLayout.SOUTH);
 		add(new JScrollPane(userListUI), BorderLayout.CENTER);
 		
 		//userListUI.setFont(new Font("Verdana", Font.PLAIN, 20));
@@ -34,7 +40,7 @@ public class UserPanel extends JPanel implements UserStatusListener {
 		
 		userListUI.setCellRenderer(new ContactListRenderer());
 		
-		
+		userListUI.setFixedCellHeight(35);
 		
 		
 		userListUI.addMouseListener(new MouseAdapter() {
@@ -65,9 +71,44 @@ public class UserPanel extends JPanel implements UserStatusListener {
 			
 		});
 		
+		
+		
+		logoutButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				try {
+					client.closeConnection();
+					System.exit(0);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+
+			
+		});
+		
+		
 	}
 
-
+	
+	
+	private void logout() {
+			
+		try {
+			this.client.closeConnection();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+	}
+	
+	
+	
 
 
 	public static void main(String[] args) {

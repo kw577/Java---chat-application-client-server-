@@ -21,8 +21,8 @@ class ContactListRenderer extends JLabel implements ListCellRenderer<String> {
                                                    boolean cellHasFocus) {
 
          setText(value.toString());
-
-          
+         
+         
          // TEST
          Random r = new Random();
          int fontSize = r.nextInt(10) + 10;

@@ -94,7 +94,7 @@ public class ChatClient {
 
 
 
-	private void closeConnection() throws IOException  {
+	public void closeConnection() throws IOException  {
 		// TODO Auto-generated method stub
 		String cmd = "quit\n";
 		this.serverOut.write(cmd.getBytes());
