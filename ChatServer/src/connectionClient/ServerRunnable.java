@@ -131,7 +131,9 @@ public class ServerRunnable implements Runnable {
 		this.serverSocket.removeConnection(this);
 		
 		// po wylogowaniu  wysylamy do wszystkich pozostalych klientow informacje 
-		String byeMsg = "user " + this.loggedUser + " is offline\n";
+		
+		String byeMsg = "offline user " + this.loggedUser + " from now\n";
+		
 		List<ServerRunnable> clientList = this.serverSocket.getClientList();
 		for(ServerRunnable srvRun : clientList) {
 			if(!this.loggedUser.equals(srvRun.getLoggedUser()))

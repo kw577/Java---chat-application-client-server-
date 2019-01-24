@@ -186,6 +186,7 @@ public class ChatClient {
 						
 						
 					} else if ("offline".equalsIgnoreCase(cmd)) {
+						// nie wymaga odpowiedzi zwrotnej
 						handleOffline(tokens);
 					} else if ("answer".equalsIgnoreCase(cmd)) {  
 						

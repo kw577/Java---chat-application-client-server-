@@ -184,7 +184,37 @@ public class UserPanel extends JPanel implements UserStatusListener {
 	@Override
 	public void offline(String login) {
 		// TODO Auto-generated method stub
-		userListModel.removeElement(login);
+		
+		
+		
+		
+		
+		login = login.replaceAll("\\s+","");
+		String login_temp = login;
+		login +="_";
+		
+		if(userListModel.contains(login)) {
+			System.out.println("\nW kontaktach jest osoba o takim nicku (sprawdzanie wylogowania)");
+			
+			for(int i=0; i<this.userListModel.size(); i++) {
+				if(this.userListModel.get(i).equals(login)) {
+					this.userListModel.set(i, login_temp);
+				}
+				
+				
+			}
+			
+			
+			
+			
+		}
+		else System.out.println("\nW kontaktach nie ma osoby o takim nicku");
+		
+		//userListModel.addElement(login);
+		
+		
+		
+		
 	}
 	
 }
