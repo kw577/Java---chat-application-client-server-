@@ -95,6 +95,8 @@ public class ServerRunnable implements Runnable {
 					joinConverstion(tokens);
 				} else if ("leave".equalsIgnoreCase(cmd)) { // dolaczenie do zapisanej rozmowy
 					leaveConversation(tokens);
+				} else if ("answer".equalsIgnoreCase(cmd)) { // dolaczenie do zapisanej rozmowy
+					sendStatusInfo(tokens);
 				}		
 				else {
 					msg = "unknown command: " + cmd + "\n";
@@ -237,6 +239,43 @@ public class ServerRunnable implements Runnable {
 		this.loggedUser = loggedUser;
 	}
 
+	
+	
+	//odpowiedz zwrotna na zgloszenie online jakiegos uzytkownika
+	private void sendStatusInfo(String[] tokens) throws IOException {
+		
+		String sendTo = tokens[1];
+		String body = tokens[2];
+		
+		
+		
+		List<ServerRunnable> clients = this.serverSocket.getClientList();
+		for(ServerRunnable srvRun : clients) {
+			
+				if(sendTo.equalsIgnoreCase(srvRun.getLoggedUser())) {
+					String outAns = "answer user " + this.loggedUser + " is online" + "\n";
+					System.out.println("\nSerwer przekazuje dalej informacje o statusie: " + outAns);
+					try {
+						// watek czeka az nowy user rozpocznie nasluchiwanie wiadomosci
+						// rozwiazanie robocze - do poprawy !!!! - powinno sie zastosowac synchronizacje watkow
+						Thread.sleep(500);  
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					srvRun.send(outAns);
+				}
+			
+		}
+		
+		
+	}
+	
+	
+	
+	
+	
+	
 	// komenda typu:  msg <user> <text>
 	// komenda typu:  msg #topic <text>
 	private void sendMessage(String[] tokens) throws IOException {

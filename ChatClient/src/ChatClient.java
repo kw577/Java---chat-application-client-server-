@@ -85,6 +85,14 @@ public class ChatClient {
 	}
 
 
+	public void answer(String sendTo) throws IOException {
+		// TODO Auto-generated method stub
+		String cmd = "answer " + sendTo + " " + "about status" +"\n";
+		System.out.println("\nWyslano odpowiedz zwrotna: " + cmd);
+		this.serverOut.write(cmd.getBytes());
+	}
+	
+	
 
 	public void msg(String sendTo, String msgBody) throws IOException {
 		// TODO Auto-generated method stub
@@ -172,8 +180,19 @@ public class ChatClient {
 					String cmd = tokens[0];
 					if("online".equalsIgnoreCase(cmd)) {
 						handleOnline(tokens);
+						
+						//odpowiedz zwrotna - na informacje o tym ze inny uzytkownik jest online - cleint przedstawia mu swoj status
+						answer(tokens[2]);
+						
+						
 					} else if ("offline".equalsIgnoreCase(cmd)) {
 						handleOffline(tokens);
+					} else if ("answer".equalsIgnoreCase(cmd)) {  
+						
+						System.out.println("\n\notrzymano otpowiedz zwrotna");
+						
+						// odpowiedz zwrotna na info o statusie
+						handleOnline(tokens);
 					} else if ("msg".equalsIgnoreCase(cmd)) {
 						String[] tokensMsg = line.split(" ", 3); // oddziaala tylko 3 pierwsza slowa - reszta - wiadomosc do innego uzytkownika bedzie przechowywana w  tokensMsg[2]
 						
@@ -265,6 +284,7 @@ public class ChatClient {
 		String login = tokens[2];
 		for(UserStatusListener listener : userStatusListeners) {
 			listener.online(login);
+			
 		}
 		
 	}
