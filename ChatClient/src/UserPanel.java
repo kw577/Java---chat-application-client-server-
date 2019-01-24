@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
@@ -27,6 +28,13 @@ public class UserPanel extends JPanel implements UserStatusListener {
 		setLayout(new BorderLayout());
 		add(new JScrollPane(userListUI), BorderLayout.CENTER);
 		
+		//userListUI.setFont(new Font("Verdana", Font.PLAIN, 20));
+		
+		
+		
+		userListUI.setCellRenderer(new ContactListRenderer());
+		
+		
 		
 		
 		userListUI.addMouseListener(new MouseAdapter() {
@@ -35,8 +43,14 @@ public class UserPanel extends JPanel implements UserStatusListener {
 				if(e.getClickCount() > 1) {
 					String login = userListUI.getSelectedValue();
 					MessagePane messagePane = new MessagePane(client, login);
-				
+					
+					
+					
 					JFrame f = new JFrame("Message to: " + login);
+					
+					
+					
+					
 					
 					f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 					f.setSize(500, 500);
@@ -45,6 +59,12 @@ public class UserPanel extends JPanel implements UserStatusListener {
 				}
 			}
 		});
+		
+		
+		userListUI.addMouseMotionListener(new MouseAdapter() {
+			
+		});
+		
 	}
 
 
