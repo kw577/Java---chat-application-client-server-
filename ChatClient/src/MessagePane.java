@@ -1,4 +1,7 @@
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -31,10 +34,16 @@ public class MessagePane extends JPanel implements MessageListener {
 		
 		setLayout(new BorderLayout());
 		add(new JScrollPane(messageList), BorderLayout.CENTER);
+		
+		//inputField.setPreferredSize(new Dimension(400,30));
+		inputField.setFont(new Font("Verdana", Font.PLAIN, 17));
+		inputField.setMargin(new Insets(10, 10, 10, 10));
 		add(inputField, BorderLayout.SOUTH);
 		
 		
+		messageList.setCellRenderer(new MessageListRenderer());
 		
+		messageList.setFixedCellHeight(25);
 		
 		
 		inputField.addActionListener(new ActionListener() {

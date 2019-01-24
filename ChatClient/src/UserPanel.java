@@ -62,7 +62,7 @@ public class UserPanel extends JPanel implements UserStatusListener {
 					
 					
 					f.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-					f.setSize(500, 500);
+					f.setSize(400, 450);
 					f.getContentPane().add(messagePane);
 					f.setVisible(true);
 				}

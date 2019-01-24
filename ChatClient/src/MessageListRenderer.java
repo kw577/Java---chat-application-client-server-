@@ -8,9 +8,9 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
-class ContactListRenderer extends JLabel implements ListCellRenderer<String> {
+class MessageListRenderer extends JLabel implements ListCellRenderer<String> {
 	
-     public ContactListRenderer() {
+     public MessageListRenderer() {
          setOpaque(true);
      }
 
@@ -24,26 +24,24 @@ class ContactListRenderer extends JLabel implements ListCellRenderer<String> {
          
          
     	 setText(value.toString());
-         if(value.toString().contains("_")) {
-        	 
-        	 setText(value.toString().substring(0, value.toString().length()-1));
-         }
-         
+    	 
+    	 
+    	
          
          
                   
                
          
-         setFont(new Font("Verdana", Font.PLAIN, 20));
+         setFont(new Font("Verdana", Font.PLAIN, 14));
          
          if (isSelected) {
             
         	 setBackground(list.getBackground());
-        	 setFont(new Font("Verdana", Font.PLAIN, 26));
+        	 
          }
          if (!isSelected) {
              setBackground(list.getBackground());
-             setFont(new Font("Verdana", Font.PLAIN, 20));
+             
          }
          
          
@@ -59,16 +57,23 @@ class ContactListRenderer extends JLabel implements ListCellRenderer<String> {
          
          
          
+    	 // rozroznianie komunikatow
+         if(value.toString().substring(0, 4).equals("You:")) {
+        	 
+        	 setBackground(new Color(200, 220, 240));
+         } else {
+        	 setBackground(new Color(255, 255, 220));
+         }
          
          
          
          
-         ///////// Oznaczanie aktywnych uzytkownikow
-         if(value.contains("_")) setBackground(new Color(170,220,170));
          
          
+        
          
-        setHorizontalAlignment(JLabel.CENTER);
+         
+        setHorizontalAlignment(JLabel.LEFT);
 
          
          

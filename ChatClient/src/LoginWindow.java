@@ -1,7 +1,10 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -54,12 +57,15 @@ public class LoginWindow extends JFrame {
         cs.gridx = 0;
         cs.gridy = 0;
         cs.gridwidth = 1;
+        lbUsername.setFont(new Font("Verdana", Font.PLAIN, 17));
         p.add(lbUsername, cs);
  
-        loginField = new JTextField(20);
+        loginField = new JTextField(15);
         cs.gridx = 1;
         cs.gridy = 0;
         cs.gridwidth = 2;
+        loginField.setFont(new Font("Verdana", Font.PLAIN, 17));
+        loginField.setMargin(new Insets(10, 10, 10, 10));
         p.add(loginField, cs);
 		
 		
@@ -68,13 +74,16 @@ public class LoginWindow extends JFrame {
         cs.gridx = 0;
         cs.gridy = 1;
         cs.gridwidth = 1;
+        lbPassword.setFont(new Font("Verdana", Font.PLAIN, 17));
         p.add(lbPassword, cs);
 		
 		
-        passwordField = new JPasswordField(20);
+        passwordField = new JPasswordField(15);
         cs.gridx = 1;
         cs.gridy = 1;
         cs.gridwidth = 2;
+        passwordField.setFont(new Font("Verdana", Font.PLAIN, 17));
+        passwordField.setMargin(new Insets(10, 10, 10, 10));
         p.add(passwordField, cs);
         p.setBorder(new LineBorder(Color.GRAY));
 		
@@ -82,14 +91,15 @@ public class LoginWindow extends JFrame {
         JPanel bp = new JPanel();
 		
 		
-		
+		loginButton.setPreferredSize(new Dimension(100,50));
+		loginButton.setFont(new Font("Verdana", Font.PLAIN, 20));
 		bp.add(loginButton);
 		
 		
 		
 		getContentPane().add(p, BorderLayout.CENTER);
         getContentPane().add(bp, BorderLayout.PAGE_END);
- 
+        
         pack();
         setResizable(false);
        // setLocationRelativeTo(parent);
