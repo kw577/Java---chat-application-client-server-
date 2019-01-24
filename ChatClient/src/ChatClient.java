@@ -16,6 +16,8 @@ public class ChatClient {
 	private InputStream serverIn;
 	private BufferedReader bufferedIn;
 	
+	
+	public ArrayList<String> listOfContacts = new ArrayList<>();
 	private ArrayList<UserStatusListener> userStatusListeners = new ArrayList<>();
 	private ArrayList<MessageListener> messageListeners = new ArrayList<>();
 	
@@ -110,8 +112,9 @@ public class ChatClient {
 		String response = bufferedIn.readLine();
 		System.out.println("\nServer response: " + response);
 		
-		if("You have succesfully logged in".equalsIgnoreCase(response)) {
+		if("contacts".equalsIgnoreCase(response.substring(0,8))) {
 			startServerDataReader();
+			this.fetchListOfContacts(response);
 			return true;
 		} else {
 			return false;
@@ -121,6 +124,26 @@ public class ChatClient {
 
 
 	
+
+	private void fetchListOfContacts(String response) {
+		// TODO Auto-generated method stub
+		String data = response.replaceAll("contacts ","");
+		
+		String[] contacts = data.split(" ");
+		if(contacts != null && contacts.length > 0) {
+			
+			for(int i=0; i<contacts.length; i++) {
+				if(contacts[i]!=null && contacts[i] != "  ") {
+				System.out.println("\nDodano " + contacts[i] + " do listy kontaktow");
+				this.listOfContacts.add(contacts[i]);
+				}
+			}
+						
+		}
+		//listOfContacts.toString();
+	}
+
+
 
 	private void startServerDataReader() {
 		// TODO Auto-generated method stub

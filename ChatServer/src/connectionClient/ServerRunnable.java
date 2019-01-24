@@ -165,9 +165,15 @@ public class ServerRunnable implements Runnable {
 			
 			// Test login - za pomoca ustawionych na stale wartosci 
 			if(password.equals(correctPassword)) {
-				msg = "You have succesfully logged in\n";
+				//msg = "You have succesfully logged in\n";
+				
 				this.userState = State.logged;
 				this.loggedUser = login;
+				
+				
+				msg = this.sendListOfContacts() + "\n";
+				//System.out.println("\nOdpowiedz na logowanie: " + msg);
+				
 				System.out.println("\nUser: " + login + " logged in\n");
 				
 				// po zalogowaniu sie wysylamy do wszystkich pozostalych klientow informacje o nowym zalogowanym uczestniku  
@@ -263,6 +269,26 @@ public class ServerRunnable implements Runnable {
 		
 		
 	}
+	
+	
+	private String sendListOfContacts() {
+		// TODO Auto-generated method stub
+		String listOfContacts="";
+		String sql = "SELECT user_1, user_2 FROM contacts WHERE user_1='" + this.loggedUser +"' OR user_2='" + this.loggedUser + "';";
+		
+		//System.out.println("\n\n\n\n"+sql);
+		
+		listOfContacts = executeSQLquery(sql);
+		
+		listOfContacts = listOfContacts.replaceAll(this.loggedUser + " ","");
+		
+		String msg = "contacts " + listOfContacts;
+
+		
+		
+		return msg;
+	}
+	
 	
 	
 	public boolean isMemberOfDiscussion(String topic) {

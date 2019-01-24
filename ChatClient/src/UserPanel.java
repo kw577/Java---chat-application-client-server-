@@ -72,10 +72,14 @@ public class UserPanel extends JPanel implements UserStatusListener {
 			}
 		}
 		
-		
+	
+		/*
 		userPanel.userListModel.addElement("user");
 		userPanel.userListModel.addElement("me");
-
+		for(String person : client.listOfContacts) {
+			userPanel.userListModel.addElement(person);
+		}
+		*/
 	}
 
 

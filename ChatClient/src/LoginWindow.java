@@ -82,9 +82,18 @@ public class LoginWindow extends JFrame {
 				frame.setVisible(true);
 				
 				// test			- zmienic dostep do userListModel w UserPanel na private
-				userPanel.userListModel.addElement("user");
-				userPanel.userListModel.addElement("me");
+				//userPanel.userListModel.addElement("user");
+				//userPanel.userListModel.addElement("me");
+				System.out.println("ilosc kontaktow " + client.listOfContacts.size());
 				
+				
+				for(String person : client.listOfContacts) {
+					userPanel.userListModel.addElement(person);
+				}
+				
+				
+				
+				//userPanel.userListModel.addElement(client.listOfContacts.get(1));
 				
 			} else {
 				JOptionPane.showMessageDialog(this, "Invalid login/password");
