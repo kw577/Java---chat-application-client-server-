@@ -29,62 +29,6 @@ public class ChatClient {
 	}
 
 
-
-	public static void main(String[] args) throws IOException {
-		// TODO Auto-generated method stub
-		ChatClient client = new ChatClient("localhost", 4444);
-		client.addUserStatusListener(new UserStatusListener() {
-
-			@Override
-			public void online(String login) {
-				// TODO Auto-generated method stub
-				System.out.println("ONLINE: " + login);
-			}
-
-			@Override
-			public void offline(String login) {
-				// TODO Auto-generated method stub
-				System.out.println("OFFLINE: " + login);
-			}
-			
-						
-		});
-		
-	client.addMessageListener(new MessageListener() {
-
-		@Override
-		public void onMessage(String fromLogin, String msgBody) {
-			// TODO Auto-generated method stub
-			System.out.println("You got a message from: " + fromLogin + " ->  " + msgBody);
-		}
-		
-	});	
-		
-		
-		
-		if(!client.connectToServer()) {
-			System.err.println("Connection failed");
-		} else {
-			System.out.println("Connection succesfull");
-			
-			// logowanie
-			if(client.login("user", "pass")) {
-				System.out.println("\nLogin successful");
-				
-				client.msg("me","Messega from ChatClient application");
-			} else {
-				System.err.println("\nLogin failed");
-			}
-			
-			//test - automatycznie zamknie client'a po zalogowaniu
-			//client.closeConnection();
-		}
-	
-		//client.closeConnection();
-		
-	}
-
-
 	public void answer(String sendTo) throws IOException {
 		// TODO Auto-generated method stub
 		String cmd = "answer " + sendTo + " " + "about status" +"\n";

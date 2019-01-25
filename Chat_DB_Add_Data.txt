@@ -1,0 +1,22 @@
+INSERT INTO user (nick, password) VALUES ('Adam', 'pass1');
+INSERT INTO user (nick, password) VALUES ('Kuba', 'pass2');
+INSERT INTO user (nick, password) VALUES ('Marcin', 'pass3');
+INSERT INTO user (nick, password) VALUES ('Jan', 'pass4');
+INSERT INTO user (nick, password) VALUES ('Ania', 'pass5');
+INSERT INTO user (nick, password) VALUES ('Magda', 'pass6');
+INSERT INTO user (nick, password) VALUES ('Iwona', 'pass7');
+INSERT INTO user (nick, password) VALUES ('Ola', 'pass8');
+
+
+
+INSERT INTO contacts (user_1, user_2) VALUES ('Adam', 'Kuba');
+INSERT INTO contacts (user_1, user_2) VALUES ('Adam', 'Ania');
+INSERT INTO contacts (user_1, user_2) VALUES ('Adam', 'Jan');
+INSERT INTO contacts (user_1, user_2) VALUES ('Adam', 'Ola');
+INSERT INTO contacts (user_1, user_2) VALUES ('Kuba', 'Marcin');
+INSERT INTO contacts (user_1, user_2) VALUES ('Kuba', 'Iwona');
+INSERT INTO contacts (user_1, user_2) VALUES ('Marcin', 'Ania');
+INSERT INTO contacts (user_1, user_2) VALUES ('Marcin', 'Ola');
+INSERT INTO contacts (user_1, user_2) VALUES ('Jan', 'Ania');
+INSERT INTO contacts (user_1, user_2) VALUES ('Magda', 'Ola');
+INSERT INTO contacts (user_1, user_2) VALUES ('Iwona', 'Ola');

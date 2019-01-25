@@ -111,40 +111,7 @@ public class UserPanel extends JPanel implements UserStatusListener {
 	}
 	
 	
-	
 
-
-	public static void main(String[] args) {
-		ChatClient client = new ChatClient("localhost", 4444);
-		
-		UserPanel userPanel = new UserPanel(client);
-		
-		
-		JFrame frame = new JFrame("Chat Application");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(400, 600);
-		frame.getContentPane();
-		frame.add(userPanel, BorderLayout.CENTER);
-		frame.setVisible(true);
-		
-		if(client.connectToServer()) {
-			try {
-				client.login("user", "pass");
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		
-	
-		/*
-		userPanel.userListModel.addElement("user");
-		userPanel.userListModel.addElement("me");
-		for(String person : client.listOfContacts) {
-			userPanel.userListModel.addElement(person);
-		}
-		*/
-	}
 
 
 
